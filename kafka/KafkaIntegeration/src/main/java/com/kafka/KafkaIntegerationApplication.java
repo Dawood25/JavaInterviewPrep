@@ -1,6 +1,8 @@
 package com.kafka;
 
 import com.kafka.consumer.KafkaConsumer;
+import com.kafka.payload.User;
+import com.kafka.producer.JsonKafkaProducer;
 import com.kafka.producer.KafkaProducer;
 import jakarta.annotation.PostConstruct;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -18,6 +20,8 @@ public class KafkaIntegerationApplication implements CommandLineRunner {
     private KafkaProducer kafkaProducer;
     @Autowired
     private KafkaConsumer kafkaConsumer;
+    @Autowired
+    private JsonKafkaProducer jsonKafkaProducer;
 
     public static void main(String[] args) {
         SpringApplication.run(KafkaIntegerationApplication.class, args);
@@ -28,5 +32,9 @@ public class KafkaIntegerationApplication implements CommandLineRunner {
         kafkaProducer.sendMessage("Hello, Kafka!");
     }
 
+    @PostConstruct
+    public void sendMessage() {
+        jsonKafkaProducer.sendMessage(User.builder().id(12345).firstName("Dawood").lastName("Multhanwala").build());
+    }
 
 }
